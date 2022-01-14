@@ -1,0 +1,2 @@
+FROM python-parent:latest
+LABEL maintainer="dheeraj"
