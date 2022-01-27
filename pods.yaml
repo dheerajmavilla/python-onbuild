@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: oranpod3 
+  labels:
+    app: oranpod3 
+#namespace: orane2a1
+spec: 
+  containers:
+
+  - image: orana1e2/redis_db_image:v1
+    name: redisdb1
+    ports: 
+      - containerPort: 6379
+
+  - image: orana1e2/rtmgr_simulator_image:v1
+    name: rtmgr1
+    ports:
+      - containerPort: 12020
+
+  - image: orana1e2/e2mgr_51image:v1
+    name: e2mgr1
+    imagePullpolicy: IfNotPresent
+#   command: ["/bin/bash", "-c", "./run_e2mgr.sh"]
+    command: ["/bin/bash","c", "--" ] 
+    args: [ "while true; do sleep 30; done;" ]
+    ports:
+     - containerPort: 3801
+    env:
+      - name: DBAAS_SERVICE_HOST
+        valueFrom: 
+          fieldRef:
+            fieldPath: status.podIP
+      - name: DBAAS_SERVICE_PORT
+        value: "6379"
+      - name: MY_POD_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+    securityContext:
+      capabilities:
+        add:
+          - ALL
