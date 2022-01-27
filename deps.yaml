@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: failuretc
+  labels:
+    app: insvc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: insvc
+  template:
+    metadata:
+      labels:
+        app: insvc
+    spec:
+      containers:
+      - image: dheerajmav/server1
+        name: servercon
+        ports:
+          - containerPort: 1234
+    
+      - image: dheerajmav/client1
+        name: clientcon
+
+      - image: dheerajmav/testrob1
+        name: robotcon
+        volumeMounts:
+          name: result 
+            mountPath: /test
+  volumes: 
+    - name : result
+      hostPath: 
+        path: /home/1682/flask

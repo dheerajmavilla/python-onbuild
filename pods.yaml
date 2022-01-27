@@ -41,3 +41,24 @@ spec:
       capabilities:
         add:
           - ALL
+  - image: orana1e2/ricappts_editimage:v1
+    name: xapp1
+    imagePullPolicy: IfNot Present
+    command: ["/bin/bash", "-c", "./run_xapp1.sh" ] 
+    command: ["/bin/bash", "-c", "--" ] 
+    args: [ "while true; do sleep 30; done;" ]
+    port:
+    - containerPort: 4560
+    env:
+    - name : RMR_SEED_RT  
+      value: "/data/bootstrap.rt"
+    - name RMR_RTG_SVC
+      value: "" 
+    - name: MY_POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+    securityContext:
+      capabilities:
+      add:
+        - ALL
